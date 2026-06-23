@@ -1,0 +1,28 @@
+---
+- name: install Docker
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: apt
+      apt:
+        update_cache: yes
+
+    - name: install utils
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - htop
+          - software-properties-common
+        state: present
+
+    - name: install Docker
+      apt:
+        name: docker.io
+        state: present
+    - name: enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes

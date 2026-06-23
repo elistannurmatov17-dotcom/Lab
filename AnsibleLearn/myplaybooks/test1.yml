@@ -1,0 +1,9 @@
+---
+ - name: 
+   hosts: webservers
+   tasks:
+    - name: folder
+      file: 
+          path: /tmp/text.txt
+          state: directory
+      register: folder

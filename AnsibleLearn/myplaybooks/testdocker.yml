@@ -1,0 +1,28 @@
+---
+  - name: docker ini
+    hosts: webservers
+    become: yes
+    
+    tasks:
+       - name:
+         apt:
+           update_cache: yes
+       
+       - name: install docker
+         apt:
+           name: docker.io
+           state: present
+
+       - name: run docker
+         service:
+            name: docker
+            state: started
+            enabled: yes
+
+       - name: check docer version
+         command: docker -v
+         register: docker_version_output
+
+       - name: print docker version
+         debug:
+           var: docker_version_output.stdout
