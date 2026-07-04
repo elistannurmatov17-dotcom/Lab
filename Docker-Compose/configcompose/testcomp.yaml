@@ -1,6 +1,0 @@
-services:
-  my-web-server:
-    image: nginx:alpine
-    container_name: learning_nginx
-    ports:
-      - "8080:80"
