@@ -1,3 +1,11 @@
-# MyLabiry
-My home laboratory
-Here is everything I ever studied, my knowledge base.
+# 🏛️ My Home Laboratory & Knowledge Base
+
+Добро пожаловать в мою персональную домашнюю лабораторию и базу знаний по системному администрированию, виртуализации и сетевым технологиям.
+
+## 🚀 Текущий стек и архитектура
+* **Гипервизор 1-го уровня (Bare-metal):** Proxmox VE 8.x / 9.x
+* **Среда вложенной виртуализации:** VMware Workstation Pro
+* **Сетевая конфигурация:** Локальный DNS, статическая маршрутизация, L2-мосты (Bridged)
+* **Документация:** Раздел подробных шпаргалок по настройке систем находится в папке `/Proxmox`.
+
+*Here is everything I study, build, and configure. Step by step.*
