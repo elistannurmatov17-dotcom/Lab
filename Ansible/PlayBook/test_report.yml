@@ -1,0 +1,61 @@
+- name: Комплексная проверка и аудит целевого сервера
+  hosts: managed_servers
+  gather_facts: true
+  tasks:
+    - name: Создание директории для отчетов
+      ansible.builtin.file:
+        path: /tmp/ansible_reports
+        state: directory
+        mode: '0755'
+
+    - name: Сбор информации о дисковом пространстве
+      ansible.builtin.shell: "df -h / | awk 'NR==2 {print \"Всего: \" $2 \", Использовано: \" $3 \", Свободно: \" $4 \" (\" $5 \")\"}'"
+      register: disk_info
+      changed_when: false
+
+    - name: Проверка оперативной памяти
+      ansible.builtin.shell: "free -h | awk 'NR==2 {print \"Всего: \" $2 \", Использовано: \" $3 \", Свободно: \" $4}'"
+      register: ram_info
+      changed_when: false
+
+    - name: Тестирование сетевого соединения (загрузка файла)
+      ansible.builtin.get_url:
+        url: http://tele2.net
+        dest: /tmp/ansible_reports/10MB.zip
+        force: true
+      register: network_test
+
+    - name: Удаление тестового файла после скачивания
+      ansible.builtin.file:
+        path: /tmp/ansible_reports/10MB.zip
+        state: absent
+
+    - name: Формирование итогового отчета в файл
+      ansible.builtin.copy:
+        dest: /tmp/ansible_reports/system_report.txt
+        content: |
+          === ОТЧЕТ О СОСТОЯНИИ СЕРВЕРА ===
+          Хост: {{ inventory_hostname }} ({{ ansible_host }})
+          ОС: {{ ansible_distribution }} {{ ansible_distribution_version }}
+          Ядро: {{ ansible_kernel }}
+          Процессор: {{ ansible_processor_vcpus }} vCPU
+          
+          Память:
+          {{ ram_info.stdout }}
+          
+          Диск (/):
+          {{ disk_info.stdout }}
+          
+          Сеть:
+          Файл 10MB скачан за {{ network_test.elapsed }} сек.
+          ==================================
+        mode: '0644'
+
+    - name: Чтение созданного отчета для вывода на экран
+      ansible.builtin.slurp:
+        src: /tmp/ansible_reports/system_report.txt
+      register: slurp_report
+
+    - name: Вывод отчета в terminal Ansible
+      ansible.builtin.debug:
+        msg: "{{ (slurp_report.content | b64decode).split('\n') }}"
