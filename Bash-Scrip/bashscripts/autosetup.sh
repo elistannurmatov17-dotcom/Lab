@@ -1,31 +1,36 @@
 #!/bin/bash
+set -e
 
 if [ "$EUID" -ne 0 ]; then
-echo "pls write whis sudo"
-exit 1
+  echo "Please run this script with sudo!"
+  exit 1
 fi
 
-echo "updating"
-apt update && apt upgrade
+echo "=== Updating system ==="
+apt update && apt upgrade -y
 
-echo "install packs"
-apt install -y sudo curl ufw  openssh-server ansible docker.io docker-compose git htop bash-completion
+echo "=== Installing packages ==="
+apt install -y sudo curl ufw openssh-server ansible docker.io docker-compose git htop bash-completion
 
-echo "sshkey" #ssh key /etc/shh/
+echo "=== Setting up SSH Key ==="
 mkdir -p /etc/ssh/keys
+chmod 700 /etc/ssh/keys
+
 if [ ! -f /etc/ssh/keys/id_ed25519 ]; then
-ssh-keygen -t ed25519 -N "" -f /etc/ssh/keys/id_ed25519 -C "global-server"
-echo "pubkey"
-cat /etc/ssh/keys/id_ed25519.pub
-echo "==================="
+  ssh-keygen -t ed25519 -N "" -f /etc/ssh/keys/id_ed25519 -C "global-server"
+  chmod 600 /etc/ssh/keys/id_ed25519
+  echo "=========================================="
+  echo "PUBLIC KEY GENERATED:"
+  cat /etc/ssh/keys/id_ed25519.pub
+  echo "=========================================="
 else
-echo "common ssh key allready existed"
+  echo "Common SSH key already exists."
 fi
 
-echo "ufw"
+echo "=== Configuring UFW ==="
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow 22/tcp
 echo "y" | ufw enable
 
-echo "SETUP OK"
+echo "=== SETUP OK ==="
