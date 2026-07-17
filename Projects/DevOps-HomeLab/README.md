@@ -153,12 +153,12 @@ docker compose down -v
 
 | Сервис | Адрес |
 |---|---|
-| Flask API | http://localhost:5000 |
-| Nginx | http://localhost |
-| PostgreSQL | localhost:5432 |
-| Prometheus | http://localhost:9090 |
-| Grafana | http://localhost:3000 |
-| Portainer | http://localhost:9000 |
+| Flask API | http://localhost |
+| Nginx | http://localhost
+| PostgreSQL | https://localhost |
+| Prometheus | http://localhost |
+| Grafana | http://localhost |
+| Portainer | http://localhost |
 
 
 
