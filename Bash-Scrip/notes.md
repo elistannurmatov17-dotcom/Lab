@@ -77,10 +77,10 @@ PACKAGES+=(tmux)             # Добавление элемента в коне
 Доступны, начиная с Bash 4. Требуют обязательного объявления через `declare -A`.
 ```bash
 declare -A SERVERS
-SERVERS[web]="192.168.1.10"
-SERVERS[db]="192.168.1.20"
+SERVERS[web]="117.0.0.0"
+SERVERS[db]="0.0.0.0"
 
-echo \${SERVERS[web]}         # Выведет: 192.168.1.10
+echo \${SERVERS[web]}         # Выведет: 117.1.0.0
 ```
 
 ---
