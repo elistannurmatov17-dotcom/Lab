@@ -33,3 +33,7 @@ Before real customer data:
 ## Credential exposure
 
 A manager can explicitly request the decrypted `lk.salyk.kg` password from the manager portal because the business workflow requires it. Such access is authenticated and audited. The password must never appear in application logs, backups exported to public locations, screenshots, issue trackers or Git.
+
+## Form data
+
+The public form stores all submitted business fields, selected object/activity/tax/calculation values, custom UGNS text when used, and all three uploaded documents. The form is intentionally the original seven-section workflow; the only workflow addition is direct submission to the backend.
