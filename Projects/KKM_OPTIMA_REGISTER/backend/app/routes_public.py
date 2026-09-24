@@ -1,15 +1,23 @@
 import secrets
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session, selectinload
+from fastapi import Form
 
 from .auth import encrypt_secret
 from .config import get_settings
 from .db import get_db
 from .models import Application, AuditLog, Document
 from .schemas import ApplicationCreate, ApplicationDetails, PublicStatus
-from .services import application_number, load_upload, public_token_hash, remove_stored_files, store_upload, validate_file
+from .services import (
+    application_number,
+    load_upload,
+    public_token_hash,
+    remove_stored_files,
+    store_upload,
+    validate_file,
+)
 
 router = APIRouter(prefix="/api")
 s = get_settings()
@@ -28,8 +36,15 @@ async def create_application(
     except Exception as exc:
         raise HTTPException(422, "Некорректные данные заявки") from exc
 
+    if payload.ugns == "other":
+        if not payload.ugns_other:
+            raise HTTPException(422, "Для другого УГНС укажите район вручную")
+    elif payload.ugns_other:
+        raise HTTPException(422, "ugns_other допустим только для значения other")
+
     loaded: list[tuple[str, UploadFile, bytes]] = []
     limit = s.max_file_size_mb * 1024 * 1024
+
     for doc_type, upload in [
         ("REGISTRATION", registration_document),
         ("PASSPORT_FRONT", passport_front),
@@ -43,6 +58,7 @@ async def create_application(
 
     token = secrets.token_urlsafe(32)
     stored_names: list[str] = []
+
     try:
         item = Application(
             application_number=application_number(),
@@ -69,7 +85,15 @@ async def create_application(
                 )
             )
 
-        db.add(AuditLog(application_id=item.id, action="CREATED", details={"source": "public_form"}))
+        db.add(AuditLog(
+            application_id=item.id,
+            action="CREATED",
+            details={
+                "source": "public_form",
+                "form_version": "original_html_v1",
+                "documents": [x[0] for x in loaded],
+            },
+        ))
         db.commit()
     except Exception:
         db.rollback()
