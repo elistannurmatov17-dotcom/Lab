@@ -82,6 +82,7 @@ def startup() -> None:
     if production:
         with engine.begin() as conn:
             conn.execute(text("ALTER TABLE applications ADD COLUMN IF NOT EXISTS internal_comment TEXT"))
+            conn.execute(text("ALTER TABLE applications ADD COLUMN IF NOT EXISTS ugns_other VARCHAR(255)"))
     Path(s.upload_dir).mkdir(parents=True, exist_ok=True)
 
     with Session(engine) as db:
