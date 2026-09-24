@@ -1,0 +1,42 @@
+{$PUBLIC_DOMAIN} {
+    encode gzip zstd
+    header {
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "no-referrer"
+        X-Frame-Options "DENY"
+        X-Robots-Tag "noindex, nofollow, noarchive"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    }
+    @adminPage path /admin.html
+    respond @adminPage 404
+    handle /api/applications {
+        request_body { max_size 50MB }
+        reverse_proxy backend:8000
+    }
+    handle /api/public/* { reverse_proxy backend:8000 }
+    handle {
+        root * /srv/frontend
+        file_server
+    }
+}
+
+{$ADMIN_DOMAIN} {
+    encode gzip zstd
+    header {
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "no-referrer"
+        X-Frame-Options "DENY"
+        X-Robots-Tag "noindex, nofollow, noarchive"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    }
+    @root path /
+    redir @root /admin.html 302
+    handle /api/* { reverse_proxy backend:8000 }
+    handle /health { reverse_proxy backend:8000 }
+    handle {
+        root * /srv/frontend
+        file_server
+    }
+}
