@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: kkm
+      POSTGRES_USER: kkm
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kkm -d kkm"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://kkm:${POSTGRES_PASSWORD}@postgres:5432/kkm
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET}
+      CREDENTIAL_ENCRYPTION_KEY: ${CREDENTIAL_ENCRYPTION_KEY:?set CREDENTIAL_ENCRYPTION_KEY}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      MANAGER_1_USERNAME: ${MANAGER_1_USERNAME:-manager1}
+      MANAGER_1_PASSWORD: ${MANAGER_1_PASSWORD:-}
+      MANAGER_2_USERNAME: ${MANAGER_2_USERNAME:-manager2}
+      MANAGER_2_PASSWORD: ${MANAGER_2_PASSWORD:-}
+      MANAGER_3_USERNAME: ${MANAGER_3_USERNAME:-manager3}
+      MANAGER_3_PASSWORD: ${MANAGER_3_PASSWORD:-}
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - private_uploads:/data/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal]
+  nginx:
+    image: nginx:1.29-alpine
+    restart: unless-stopped
+    ports: ["80:80"]
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [backend]
+    networks: [internal]
+volumes:
+  postgres_data:
+  private_uploads:
+networks:
+  internal:
