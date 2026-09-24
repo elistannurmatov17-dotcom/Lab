@@ -48,6 +48,7 @@ class Application(Base):
     object_type: Mapped[str] = mapped_column(Text)
     activity: Mapped[str] = mapped_column(Text)
     ugns: Mapped[str] = mapped_column(String(255))
+    ugns_other: Mapped[str | None] = mapped_column(String(255), nullable=True)
     place_type: Mapped[str] = mapped_column(String(64))
     point_name: Mapped[str] = mapped_column(String(255))
     point_address: Mapped[str] = mapped_column(Text)
