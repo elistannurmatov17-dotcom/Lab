@@ -1,63 +1,35 @@
-# KKM_OPTIMA_REGISTER
+# KKM OPTIMA REGISTER
 
-Internal application for collecting and processing KKM registration applications.
+Internal workflow for collecting and processing KKM registration applications.
 
-## Architecture
+## What is included
 
-- Public client form: no login required.
-- Manager portal: authenticated access for up to 3 managers.
-- Backend API: FastAPI/Python.
-- Database: PostgreSQL for application metadata and workflow.
-- Private document storage for passport scans, registration documents and PDF files.
-- Nginx reverse proxy with HTTPS in deployment.
-- Docker Compose for local/server deployment.
+- Public client form at `/` without client login.
+- Submission of form data plus three required document files.
+- PostgreSQL for application metadata and workflow.
+- Private Docker volume for uploaded passport/registration documents.
+- File validation for PDF/JPG/PNG and per-file size limits.
+- Encryption at rest for the `lk.salyk.kg` password.
+- Manager login for a small internal team.
+- Application queue, details, assignment, status changes and audit events.
+- Public status URL based on a random unguessable token.
+- Nginx reverse proxy and basic rate limiting/security headers.
 
-## Client flow
+## Local/server start
 
-1. Open the public application link.
-2. Fill in company/IE, director, contact, contract, trading point, tax and settlement data.
-3. Attach registration certificate and both sides of the director's passport.
-4. Submit the application to the backend.
-5. Receive an application number and initial status.
-
-## Manager flow
-
-1. Sign in to the manager portal.
-2. View the incoming application queue.
-3. Open an application and review all submitted data and documents.
-4. Assign the application to a manager.
-5. Change status and add internal comments.
-6. Keep an audit history of important actions.
-
-## Security baseline
-
-Because the application handles identity documents and other sensitive data:
-
-- HTTPS/TLS for transmission.
-- No credentials or sensitive documents in application logs.
-- Uploaded files are validated and stored outside the public web root.
-- Documents are accessed through authorized backend endpoints, not direct public URLs.
-- Secrets are supplied through environment/secret management and never committed to Git.
-- File size and type limits are enforced.
-- Backups of sensitive data are protected.
-- Retention/deletion rules for documents are defined before production use.
-
-## Planned repository layout
-
-```text
-KKM_OPTIMA_REGISTER/
-├── frontend/
-├── backend/
-├── nginx/
-├── storage/
-├── docker-compose.yml
-├── .env.example
-├── start.sh
-├── stop.sh
-├── SECURITY.md
-└── README.md
+```bash
+cp .env.example .env
+./start.sh
 ```
 
-## Status
+On the first start `start.sh` generates strong secrets and three temporary manager passwords. Save those passwords securely; `.env` must never be committed.
 
-Initial project specification created. Implementation will start with the backend API contract and the client form integration.
+The application is available through Nginx. API documentation is at `/docs`.
+
+## Production
+
+Put the service behind HTTPS with a trusted certificate and real domain. Do not use `ENVIRONMENT=development` in production. Restrict access to the manager portal, protect backups, and define retention/deletion rules for personal documents before real customer data is used.
+
+## Important
+
+The application processes passport images/PDFs and tax-cabinet credentials. Never use real customer data in development or tests. Never commit `.env`, customer documents, backups or encryption keys.
