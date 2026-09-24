@@ -21,6 +21,7 @@ class ApplicationCreate(BaseModel):
     object_type: str = Field(min_length=1, max_length=1000)
     activity: str = Field(min_length=1, max_length=1000)
     ugns: str = Field(min_length=1, max_length=255)
+    ugns_other: str | None = Field(default=None, max_length=255)
     place_type: str = Field(min_length=1, max_length=255)
     point_name: str = Field(min_length=1, max_length=255)
     point_address: str = Field(min_length=3, max_length=5000)
@@ -39,6 +40,11 @@ class ApplicationCreate(BaseModel):
         if not v:
             raise ValueError("Поле не должно быть пустым")
         return v
+
+    @field_validator("ugns_other", "extra_name", "comment")
+    @classmethod
+    def strip_optional_text(cls, v: str | None) -> str | None:
+        return v.strip() if isinstance(v, str) and v.strip() else None
 
     @field_validator("inn", "director_inn")
     @classmethod
@@ -93,6 +99,7 @@ class ApplicationDetails(ApplicationListItem):
     extra_name: str | None
     object_type: str
     activity: str
+    ugns_other: str | None
     place_type: str
     point_address: str
     tax_regime: str
