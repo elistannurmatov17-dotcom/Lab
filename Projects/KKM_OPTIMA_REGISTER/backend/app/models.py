@@ -104,5 +104,5 @@ class AuditLog(Base):
     details: Mapped[dict] = mapped_column(JSONB, default=dict)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
 
-    application: Mapped[Application] = relationship(back_populates="application")
+    application: Mapped[Application] = relationship(back_populates="audit_logs")
     actor: Mapped[Manager | None] = relationship(back_populates="audit_logs")
