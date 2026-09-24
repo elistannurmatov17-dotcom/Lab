@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     manager_1_password: str = ""
     manager_2_username: str = "manager2"
     manager_2_password: str = ""
-    manager_3_username: str = ""
+    manager_3_username: str = "manager3"
     manager_3_password: str = ""
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=False)
 
