@@ -1,80 +1,437 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow,noarchive">
-<title>Заявка на регистрацию ККМ</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Заявка на регистрацию ККМ — для филиалов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#16324a;--soft:#546979;--paper:#f5f7f7;--card:#fff;--line:#d4dfe1;--accent:#0b7a68;--accent2:#e1f2ee;--err:#b3261e;--shadow:0 8px 30px #16324a10}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}.wrap{max-width:860px;margin:auto;padding:26px 18px 72px}
-h1{font-size:1.85rem;margin:0 0 7px}header p{color:var(--soft);margin:0}.note{margin-top:10px;font-size:.88rem;color:var(--soft)}
-.progress{position:sticky;top:0;background:var(--paper);padding:12px 0;border-bottom:1px solid var(--line);z-index:5}.track{height:7px;background:var(--line);border-radius:10px;overflow:hidden}.track i{display:block;height:100%;width:0;background:var(--accent);transition:.2s}.progress small{color:var(--soft)}
-section{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:20px;margin-top:18px;box-shadow:var(--shadow)}h2{font-size:1.1rem;margin:0 0 4px}.hint{margin:0 0 15px;color:var(--soft);font-size:.9rem}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.field label{display:block;font-weight:650;font-size:.92rem;margin-bottom:6px}.req{color:var(--err)}input,select,textarea{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff;color:inherit;font:inherit}textarea{resize:vertical}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent2)}.invalid{border-color:var(--err)!important}.errorText{display:none;color:var(--err);font-size:.82rem;margin-top:5px}.invalid+.errorText{display:block}
-.password{display:flex;gap:8px}.password input{flex:1}.mini{padding:0 11px;border:1.5px solid var(--line);border-radius:9px;background:#fff;cursor:pointer;font:inherit}.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checks label{display:flex;gap:9px;align-items:flex-start;padding:9px;border:1px solid var(--line);border-radius:8px;font-weight:500}.checks input{width:auto;margin-top:5px}.filebox{border:1.5px dashed var(--line);padding:13px;border-radius:10px;margin-top:10px}.filebox.ready{border-style:solid;border-color:#94c9bf;background:#fbfffe}.preview{display:none;margin-top:7px;color:var(--soft);font-size:.85rem}.ready .preview{display:block}.filehint{font-size:.8rem;color:var(--soft);margin-top:3px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{border:0;border-radius:10px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{background:#fff;color:var(--ink);border:1.5px solid var(--line)}.btn:disabled{opacity:.55;cursor:not-allowed}.result{display:none;margin-top:18px;padding:16px;border-radius:11px;background:var(--accent2)}.result.error{background:#fff0ef;color:var(--err)}.result a{color:inherit;font-weight:750;overflow-wrap:anywhere}.small-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.small-btn{padding:8px 11px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;font:inherit}
-@media(max-width:700px){.grid,.checks{grid-template-columns:1fr}.full{grid-column:auto}h1{font-size:1.52rem}.wrap{padding:18px 12px 55px}}
+:root{--ink:#16324a;--ink-soft:#4b6275;--paper:#f6f8f7;--card:#ffffff;--line:#d5dfe0;--accent:#0f7c6c;--accent-soft:#e3f2ef;--err:#b3261e;--warn:#8a5a00}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Onest",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:32px 20px 80px}header h1{font-size:1.9rem;line-height:1.2;margin:0 0 8px;font-weight:700}header p{margin:0;color:var(--ink-soft);max-width:62ch}
+.progress{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0;margin:20px 0 8px;border-bottom:1px solid var(--line)}.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}.progress small{color:var(--ink-soft)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 8px;margin-top:22px}section h2{display:flex;gap:12px;align-items:baseline;font-size:1.15rem;margin:0 0 4px}section h2 b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:.9rem;transform:translateY(-2px)}section .hint{color:var(--ink-soft);font-size:.9rem;margin:0 0 16px 42px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}.full{grid-column:1/-1}.field{margin-bottom:16px}label{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}label .req{color:var(--err)}
+input[type=text],input[type=email],input[type=tel],input[type=password],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;font:inherit;color:inherit;background:#fff}select{min-height:46px;appearance:auto;-webkit-appearance:menulist}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ex{font-size:.82rem;color:var(--ink-soft);margin-top:4px}.bad input,.bad select,.bad .native-select-btn{border-color:var(--err)}.msg{font-size:.82rem;color:var(--err);margin-top:4px;display:none}.bad .msg{display:block}
+.pw{position:relative}.pw button{position:absolute;right:6px;top:6px;bottom:6px;border:0;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:0 10px;font:inherit;font-size:.82rem;cursor:pointer}
+.check{display:flex;gap:12px;align-items:center;padding:14px;border:1.5px solid var(--line);border-radius:9px;cursor:pointer;font-weight:600}.check input{width:22px;height:22px;accent-color:var(--accent)}
+.note{background:#fff7e6;border:1px solid #f0d9a8;color:var(--warn);border-radius:9px;padding:10px 12px;font-size:.88rem;margin:0 0 16px}
+.multi{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px}.multi label{display:flex;gap:10px;align-items:flex-start;font-weight:500;margin:0;cursor:pointer}.multi input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--accent)}.bad .multi{border-color:var(--err)}
+@media(max-width:620px){.multi{grid-template-columns:1fr}}
+.docs{margin:0 0 8px;padding-left:22px}.docs li{margin:4px 0;font-weight:600}
+.actions{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:14px 22px;font:inherit;font-weight:600;cursor:pointer}.btn.main{background:var(--accent);color:#fff}.btn.sec{background:#fff;color:var(--ink);border:1.5px solid var(--line)}.btn:focus-visible,.check:focus-within{outline:3px solid var(--accent-soft);outline-offset:2px}.btn:disabled{opacity:.6;cursor:not-allowed}
+#result{display:none;margin-top:22px;background:var(--accent-soft);border:1px solid #b9ddd6;border-radius:14px;padding:18px}#result h3{margin:0 0 6px}#errsum{display:none;margin-top:16px;color:var(--err);font-weight:600}
+@media(max-width:620px){.grid{grid-template-columns:1fr}section .hint{margin-left:0}header h1{font-size:1.5rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.native-select{position:relative;margin:0}.native-select-btn{width:100%;min-height:46px;padding:11px 42px 11px 13px;border:1.5px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit;text-align:left;cursor:pointer;position:relative}.native-select-btn:after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--ink-soft);font-size:18px;pointer-events:none}.native-select-btn.open{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}.native-select-menu{display:none;position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:50;max-height:280px;overflow:auto;background:#fff;border:1.5px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(22,50,74,.16);padding:5px}.native-select-menu.open{display:block}.native-select-option{width:100%;border:0;background:#fff;color:var(--ink);font:inherit;text-align:left;padding:11px 12px;border-radius:7px;cursor:pointer}.native-select-option:hover,.native-select-option:focus{background:var(--accent-soft);outline:none}.native-select-option.selected{font-weight:700;background:var(--accent-soft)}
+.doc-upload{display:grid;grid-template-columns:1fr;gap:14px;margin:0 0 16px}.doc-box{border:1.5px solid var(--line);border-radius:12px;padding:16px;background:#fff}.doc-box.ready{border-color:#9bcfc5;background:#fbfffe}.doc-box.bad{border-color:var(--err)}.doc-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}.doc-title label{margin:0;font-size:.95rem}.file-picker{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border-radius:9px;background:var(--accent-soft);color:var(--accent);font-weight:700;cursor:pointer;white-space:nowrap}.file-picker input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.doc-preview{display:none;align-items:center;gap:12px;margin-top:12px;padding:10px;background:#f5faf9;border:1px solid #d7ebe7;border-radius:9px}.doc-preview img{width:84px;height:84px;object-fit:contain;border-radius:7px;border:1px solid var(--line);background:#fff}.doc-preview span{font-size:.82rem;word-break:break-word;color:var(--ink-soft);flex:1}.doc-preview .replace-btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap}.doc-help{font-size:.82rem;color:var(--ink-soft);margin:4px 0 0}.pdf-actions{margin-top:8px;display:flex;gap:12px;flex-wrap:wrap}.pdf-actions .btn{width:100%}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<h1>Заявка на регистрацию ККМ</h1>
-<p>Заполните данные, приложите документы и отправьте заявку менеджерам.</p>
-<div class="note">Не передавайте эту ссылку посторонним лицам. Форма не требует регистрации клиента.</div>
+  <h1>Заявка на регистрацию ККМ</h1>
+  <p>Заполните все поля и нажмите «Скопировать текст заявки». Создайте письмо в Outlook, вставьте текст (Ctrl+V) и приложите документы клиента.</p>
 </header>
-<div class="progress"><div class="track"><i id="pbar"></i></div><small id="ptext">Заполнено 0%</small></div>
-<form id="form" novalidate autocomplete="off">
-<section><h2>1. Доступ к lk.salyk.kg</h2><p class="hint">Логин и пароль нужны менеджеру для выполнения работ по заявке. Пароль хранится на сервере в зашифрованном виде.</p>
-<div class="grid"><div class="field"><label>Логин <span class="req">*</span></label><input name="login" maxlength="255" required><div class="errorText">Укажите логин.</div></div><div class="field"><label>Пароль <span class="req">*</span></label><div class="password"><input name="password" id="password" type="password" maxlength="255" required><button class="mini" type="button" id="showPass">Показать</button></div><div class="errorText">Укажите пароль.</div></div></div>
+<div class="progress"><div class="bar"><i id="pbar"></i></div><small id="ptext">Заполнено 0%</small></div>
+
+<form id="f" novalidate autocomplete="off">
+
+<section>
+  <h2><b>1</b>Доступ к кабинету lk.salyk.kg</h2>
+  <p class="hint">Логин и пароль клиента от налогового кабинета.</p>
+  <div class="grid">
+    <div class="field"><label>Логин <span class="req">*</span></label>
+      <input type="text" name="login" required placeholder="asdfgh@gmail.com"><div class="msg">Укажите логин</div></div>
+    <div class="field"><label>Пароль <span class="req">*</span></label>
+      <div class="pw"><input type="password" name="password" required placeholder="666gggg!!"><button type="button" id="pwt">Показать</button></div>
+      <div class="msg">Укажите пароль</div></div>
+  </div>
 </section>
-<section><h2>2. Компания / ИП</h2><p class="hint">Указывайте данные в точности как в регистрационных документах.</p>
-<div class="grid"><div class="field"><label>ИНН <span class="req">*</span></label><input name="inn" maxlength="14" inputmode="numeric" required><div class="errorText">Нужно ровно 14 цифр.</div></div><div class="field"><label>Наименование <span class="req">*</span></label><input name="company" maxlength="255" required><div class="errorText">Поле обязательно.</div></div>
-<div class="field full"><label>Юридический адрес <span class="req">*</span></label><input name="legal_address" maxlength="5000" required><div class="errorText">Поле обязательно.</div></div>
-<div class="field full"><label>ФИО директора <span class="req">*</span></label><input name="director" maxlength="255" required><div class="errorText">Поле обязательно.</div></div>
-<div class="field"><label>ИНН директора <span class="req">*</span></label><input name="director_inn" maxlength="14" inputmode="numeric" required><div class="errorText">Нужно ровно 14 цифр.</div></div>
-<div class="field"><label>Телефон директора <span class="req">*</span></label><input name="director_phone" placeholder="+996 500 123 456" required><div class="errorText">Формат: +996 XXX XXX XXX.</div></div>
-<div class="field full"><label>Email директора <span class="req">*</span></label><input name="director_email" type="email" maxlength="255" required><div class="errorText">Укажите корректный email.</div></div></div>
+
+<section>
+  <h2><b>2</b>Данные компании / ИП</h2>
+  <p class="hint">Как в свидетельстве о регистрации.</p>
+  <div class="grid">
+    <div class="field"><label>ИНН компании <span class="req">*</span></label>
+      <input type="text" name="inn" required inputmode="numeric" maxlength="14" pattern="[0-9]{14}" data-inn placeholder="14 цифр"><div class="msg">ИНН должен состоять из 14 цифр</div></div>
+    <div class="field"><label>Название компании <span class="req">*</span></label>
+      <input type="text" name="company" required placeholder="ОсОО «Пример» / ИП Иванов И.И."><div class="msg">Укажите название</div></div>
+    <div class="field full"><label>Юридический адрес <span class="req">*</span></label>
+      <input type="text" name="legal_address" required>
+      <div class="ex">Пример: Кыргызская Республика, г. Бишкек, Октябрьский район, ул. Молдокулова, д. 28, кв. 181</div><div class="msg">Укажите юридический адрес</div></div>
+    <div class="field full"><label>ФИО директора <span class="req">*</span></label>
+      <input type="text" name="director" required><div class="msg">Укажите ФИО</div></div>
+    <div class="field"><label>ИНН директора <span class="req">*</span></label>
+      <input type="text" name="director_inn" required inputmode="numeric" maxlength="14" pattern="[0-9]{14}" data-inn placeholder="14 цифр"><div class="msg">ИНН должен состоять из 14 цифр</div></div>
+    <div class="field"><label>Телефон директора <span class="req">*</span></label>
+      <input type="tel" name="director_phone" required data-phone maxlength="16" inputmode="tel" placeholder="+996 500 123 456"><div class="msg">Формат: +996 и 9 цифр</div></div>
+    <div class="field"><label>Эл. почта директора <span class="req">*</span></label>
+      <input type="email" name="director_email" required placeholder="name@mail.com"><div class="msg">Проверьте адрес почты</div></div>
+  </div>
 </section>
-<section><h2>3. Дополнительный контакт</h2><div class="grid"><div class="field"><label>Дополнительный телефон <span class="req">*</span></label><input name="extra_phone" placeholder="+996 700 123 456" required><div class="errorText">Формат: +996 XXX XXX XXX.</div></div><div class="field"><label>Контактное лицо</label><input name="extra_name" maxlength="255"></div></div></section>
-<section><h2>4. Данные договора</h2><div class="grid"><div class="field"><label>Тип объекта <span class="req">*</span></label><select name="object_type" required><option value="">— выберите —</option><option>Магазин (до 50 кв. м)</option><option>Магазин (свыше 50 кв. м)</option><option>Бутик / отдел в торговом центре</option><option>Торговое место в торговом центре</option><option>Торговое место на рынке / мини-рынке</option><option>Киоск</option><option>Павильон</option><option>Контейнер</option><option>Склад</option><option>Офис</option><option>Кафе</option><option>Ресторан</option><option>Чайхана</option><option>Аптека</option><option>Салон красоты / парикмахерская</option><option>СТО</option><option>Производственный объект</option><option>Медицинский объект</option><option>Прочий объект</option></select><div class="errorText">Выберите значение.</div></div>
-<div class="field"><label>Вид деятельности <span class="req">*</span></label><select name="activity" required><option value="">— выберите —</option><option>Розничная торговля одеждой</option><option>Розничная торговля обувью</option><option>Розничная торговля продуктами питания</option><option>Розничная торговля непродовольственными товарами</option><option>Оптовая торговля</option><option>Общественное питание</option><option>Парикмахерские и салоны красоты</option><option>Ремонт бытовой техники</option><option>Ремонт автомобилей</option><option>Транспортные услуги</option><option>Гостиничные услуги</option><option>Образовательные услуги</option><option>Медицинские услуги</option><option>IT и услуги связи</option><option>Прочие услуги</option></select><div class="errorText">Выберите значение.</div></div>
-<div class="field full"><label>УГНС <span class="req">*</span></label><select name="ugns" required><option value="">— выберите —</option><option>Октябрьский район</option><option>Ленинский район</option><option>Свердловский район</option><option>Первомайский район</option><option>Аламудунский район</option><option>Сокулукский район</option><option>г. Ош</option><option>г. Каракол</option><option>г. Джалал-Абад</option><option>г. Токмок</option><option>Другой УГНС</option></select><div class="errorText">Выберите значение.</div></div></div></section>
-<section><h2>5. Торговая точка</h2><div class="grid"><div class="field"><label>Тип торговой точки <span class="req">*</span></label><select name="place_type" required><option value="">— выберите —</option><option>Стационарная</option><option>Нестационарная</option><option>Онлайн</option><option>Выездная</option><option>Точка оказания услуг</option></select><div class="errorText">Выберите значение.</div></div><div class="field"><label>Название точки <span class="req">*</span></label><input name="point_name" maxlength="255" required><div class="errorText">Поле обязательно.</div></div><div class="field full"><label>Полный фактический адрес <span class="req">*</span></label><input name="point_address" maxlength="5000" required><div class="errorText">Поле обязательно.</div></div></div></section>
-<section><h2>6. Налоги и расчёты</h2><div class="grid"><div class="field"><label>Налоговый режим <span class="req">*</span></label><select name="tax_regime" required><option value="">— выберите —</option><option>Общий налоговый режим</option><option>Единый налог</option><option>Патент</option><option>Налоговый режим Парка высоких технологий</option><option>Налоговый режим Парка креативных индустрий</option><option>Свободная экономическая зона</option><option>Другой режим</option></select><div class="errorText">Выберите режим.</div></div><div class="field"><label>НДС</label><label style="display:flex;gap:8px;align-items:center;font-weight:500"><input name="vat" type="checkbox" style="width:auto;margin-top:0"> Плательщик НДС</label></div><div class="field full"><label>Тип расчёта <span class="req">*</span></label><div class="checks" id="calc"></div><div id="calcError" class="errorText" style="display:none">Выберите хотя бы один тип расчёта.</div></div></div></section>
-<section><h2>7. Документы</h2><p class="hint">PDF/JPG/PNG, не более 15 МБ каждый. Документы сохраняются приватно и доступны только авторизованным менеджерам.</p>
-<div class="filebox" data-for="registration_document"><b>Свидетельство / документ о регистрации <span class="req">*</span></b><input type="file" name="registration_document" accept="application/pdf,image/jpeg,image/png" required><div class="preview"></div><div class="filehint">PDF, JPG или PNG</div></div>
-<div class="filebox" data-for="passport_front"><b>Паспорт — лицевая сторона <span class="req">*</span></b><input type="file" name="passport_front" accept="application/pdf,image/jpeg,image/png" required><div class="preview"></div><div class="filehint">PDF, JPG или PNG</div></div>
-<div class="filebox" data-for="passport_back"><b>Паспорт — обратная сторона <span class="req">*</span></b><input type="file" name="passport_back" accept="application/pdf,image/jpeg,image/png" required><div class="preview"></div><div class="filehint">PDF, JPG или PNG</div></div>
-<div class="field" style="margin-top:15px"><label>Комментарий</label><textarea name="comment" maxlength="5000" rows="4"></textarea></div>
-<div class="small-actions"><button class="small-btn" type="button" id="copyText">Скопировать текст заявки</button><button class="small-btn" type="button" id="printPdf">Скачать / сохранить PDF</button></div>
+
+<section>
+  <h2><b>3</b>Дополнительный контакт</h2>
+  <p class="hint">Кому звонить, если руководитель недоступен.</p>
+  <div class="grid">
+    <div class="field"><label>Доп. номер телефона <span class="req">*</span></label>
+      <input type="tel" name="extra_phone" required data-phone maxlength="16" inputmode="tel" placeholder="+996 700 000 000"><div class="msg">Формат: +996 и 9 цифр</div></div>
+    <div class="field"><label>Имя контактного лица</label>
+      <input type="text" name="extra_name" placeholder="Необязательно"></div>
+  </div>
 </section>
-<div class="actions"><button class="btn primary" type="submit" id="send">Отправить заявку</button><button class="btn secondary" type="button" id="reset">Очистить форму</button></div>
-<div id="result" class="result"></div>
-</form></div>
+
+<section>
+  <h2><b>4</b>Данные договора</h2>
+  <p class="hint">Выберите из списков.</p>
+  <div class="field"><label>Тип объекта предпринимательства <span class="req">*</span></label>
+    <select name="object_type" required data-list="objectTypes"><option value="">— выберите —</option></select><div class="msg">Выберите тип объекта</div></div>
+  <div class="field"><label>Вид деятельности <span class="req">*</span></label>
+    <select name="activity" required data-list="activities"><option value="">— выберите —</option></select><div class="msg">Выберите вид деятельности</div></div>
+  <div class="field"><label>Район УГНС (по месту торговой точки) <span class="req">*</span></label>
+    <select name="ugns" required id="ugns"><option value="">— выберите —</option></select><div class="msg">Выберите район УГНС</div></div>
+  <div class="field" id="ugnsOtherWrap" hidden><label>Укажите район УГНС <span class="req">*</span></label>
+    <input type="text" name="ugns_other"><div class="msg">Укажите район</div></div>
+</section>
+
+<section>
+  <h2><b>5</b>Торговая точка</h2>
+  <p class="hint">Где будет установлена касса.</p>
+  <div class="field"><label>Тип торговой точки <span class="req">*</span></label>
+    <select name="place_type" required data-list="placeTypes"><option value="">— выберите —</option></select><div class="msg">Выберите тип торговой точки</div></div>
+  <div class="field"><label>Название торговой точки <span class="req">*</span></label>
+    <input type="text" name="point_name" required placeholder="Магазин «Айсулуу»"><div class="msg">Укажите название точки</div></div>
+  <div class="field"><label>Полный фактический адрес точки <span class="req">*</span></label>
+    <input type="text" name="point_address" required>
+    <div class="ex">Пример: Кыргызская Республика, г. Бишкек, Октябрьский район, ул. Молдокулова, д. 28</div><div class="msg">Укажите адрес точки</div></div>
+</section>
+
+<section>
+  <h2><b>6</b>Налоги и расчёты</h2>
+  <p class="hint">Уточните у клиента, если не уверены.</p>
+  <div class="field"><label>Применяемый режим налогообложения <span class="req">*</span></label>
+    <select name="tax_regime" required data-list="taxRegimes"><option value="">— выберите —</option></select><div class="msg">Выберите режим</div></div>
+  <div class="field"><label class="check"><input type="checkbox" name="vat"> Является плательщиком НДС</label></div>
+  <div class="field"><label>Тип расчёта <span class="req">*</span></label>
+    <div class="multi" id="calcList"></div><div class="ex">Можно выбрать несколько</div><div class="msg">Выберите хотя бы один тип расчёта</div></div>
+</section>
+
+<section>
+  <h2><b>7</b>Документы</h2>
+  <p class="hint">Загрузите 3 фотографии. Они автоматически попадут в один PDF вместе с данными заявки.</p>
+  <p class="note">Нужно загрузить: <b>1)</b> свидетельство о регистрации ИП / ОсОО, <b>2)</b> паспорт — лицевая сторона, <b>3)</b> паспорт — обратная сторона. После выбора фото оно останется в форме, а при ошибке его можно заменить.</p>
+  <div class="doc-upload">
+    <div class="doc-box" id="regDocBox">
+      <div class="doc-title"><div><label for="regDoc">Свидетельство о регистрации ИП / ОсОО <span class="req">*</span></label><p class="doc-help">Одно фото документа целиком.</p></div></div>
+      <label class="file-picker" for="regDoc">Выбрать фото</label>
+      <input id="regDoc" type="file" accept="image/jpeg,image/png" required>
+      <div class="doc-preview" id="regPreview"><img alt="Предпросмотр свидетельства"><span></span><button type="button" class="replace-btn" data-file="regDoc">Заменить</button></div>
+      <div class="msg">Загрузите фото свидетельства</div>
+    </div>
+    <div class="doc-box" id="passFrontBox">
+      <div class="doc-title"><div><label for="passFront">Паспорт директора — лицевая сторона <span class="req">*</span></label><p class="doc-help">Страница с фотографией и данными.</p></div></div>
+      <label class="file-picker" for="passFront">Выбрать фото</label>
+      <input id="passFront" type="file" accept="image/jpeg,image/png" required>
+      <div class="doc-preview" id="passFrontPreview"><img alt="Предпросмотр паспорта"><span></span><button type="button" class="replace-btn" data-file="passFront">Заменить</button></div>
+      <div class="msg">Загрузите лицевую сторону паспорта</div>
+    </div>
+    <div class="doc-box" id="passBackBox">
+      <div class="doc-title"><div><label for="passBack">Паспорт директора — обратная сторона <span class="req">*</span></label><p class="doc-help">Обратная сторона той же страницы.</p></div></div>
+      <label class="file-picker" for="passBack">Выбрать фото</label>
+      <input id="passBack" type="file" accept="image/jpeg,image/png" required>
+      <div class="doc-preview" id="passBackPreview"><img alt="Предпросмотр паспорта"><span></span><button type="button" class="replace-btn" data-file="passBack">Заменить</button></div>
+      <div class="msg">Загрузите обратную сторону паспорта</div>
+    </div>
+  </div>
+  <div class="pdf-actions"><button type="button" class="btn sec" id="pdfBtn">Скачать заявку в PDF</button></div>
+  <div class="field"><label>Комментарий</label>
+    <textarea name="comment" rows="3" placeholder="Необязательно"></textarea></div>
+</section>
+
+<div id="errsum"></div>
+<div class="actions">
+  <button type="button" class="btn main" id="sendBtn">Отправить заявку</button>
+  <button type="button" class="btn sec" id="copyBtn">Скопировать текст заявки</button>
+  <button type="button" class="btn sec" id="resetBtn">Очистить форму</button>
+</div>
+<div id="result"></div>
+</form>
+</div>
+
 <script>
-const form=document.getElementById('form'), result=document.getElementById('result'), send=document.getElementById('send');
-const calcTypes=['Товар','Услуга','Предмет расчета, реализуемый банком','Услуга сотовой связи','Выплата клиенту','Авансовый платеж','Обмен иностранной валюты, реализуемый обменным бюро','Необлагаемые поставки','Кредитный платеж','Государственная пошлина'];
-const calc=document.getElementById('calc');
-calcTypes.forEach((x,i)=>{const label=document.createElement('label');label.innerHTML='<input type="checkbox" name="calc_type" value="'+escAttr((i+1)+'. '+x)+'"> '+escHtml((i+1)+'. '+x);calc.appendChild(label)});
-function escHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function setResult(html,error=false){result.className='result'+(error?' error':'');result.style.display='block';result.innerHTML=html}
-function onlyDigits(el){el.value=el.value.replace(/\D/g,'').slice(0,14);}
-['inn','director_inn'].forEach(n=>form.elements[n].addEventListener('input',()=>onlyDigits(form.elements[n])));
-function phoneMask(el){let d=el.value.replace(/\D/g,'');if(d.startsWith('996'))d=d.slice(3);d=d.slice(0,9);let out='+996';if(d)out+=' '+d.slice(0,3);if(d.length>3)out+=' '+d.slice(3,6);if(d.length>6)out+=' '+d.slice(6,9);el.value=out;}
-['director_phone','extra_phone'].forEach(n=>form.elements[n].addEventListener('input',e=>phoneMask(e.target)));
-document.getElementById('showPass').onclick=()=>{const x=document.getElementById('password');x.type=x.type==='password'?'text':'password';document.getElementById('showPass').textContent=x.type==='password'?'Показать':'Скрыть'};
-form.addEventListener('change',e=>{if(e.target.type==='file'){const box=e.target.closest('.filebox');box.classList.toggle('ready',!!e.target.files.length);box.querySelector('.preview').textContent=e.target.files.length?e.target.files[0].name:'';}updateProgress()});
-form.addEventListener('input',updateProgress);
-function updateProgress(){const els=[...form.querySelectorAll('input,select,textarea')].filter(x=>!['submit','button','reset'].includes(x.type));let done=0;for(const x of els){if(x.type==='checkbox'){if(x.checked)done++;}else if(x.type==='file'){if(x.files.length)done++;}else if(String(x.value||'').trim())done++;}const p=Math.min(100,Math.round(done/els.length*100));document.getElementById('pbar').style.width=p+'%';document.getElementById('ptext').textContent='Заполнено '+p+'%';}
-function valid(){let ok=true;form.querySelectorAll('[required]').forEach(x=>{let good=x.type==='file'?x.files.length>0:String(x.value||'').trim().length>0;if((x.name==='inn'||x.name==='director_inn')&&String(x.value).replace(/\D/g,'').length!==14)good=false;if(['director_phone','extra_phone'].includes(x.name)&&!/^+996 \d{3} \d{3} \d{3}$/.test(x.value))good=false;if(x.name==='director_email'&&!/^[^s@]+@[^s@]+.[^s@]+$/.test(x.value))good=false;x.classList.toggle('invalid',!good);if(!good)ok=false});const calcOk=!!form.querySelector('[name=calc_type]:checked');document.getElementById('calcError').style.display=calcOk?'none':'block';if(!calcOk)ok=false;return ok}
-function payload(){return {login:form.login.value.trim(),password:form.password.value,inn:form.inn.value.trim(),company:form.company.value.trim(),legal_address:form.legal_address.value.trim(),director:form.director.value.trim(),director_inn:form.director_inn.value.trim(),director_phone:form.director_phone.value,director_email:form.director_email.value.trim(),extra_phone:form.extra_phone.value,extra_name:form.extra_name.value.trim()||null,object_type:form.object_type.value,activity:form.activity.value,ugns:form.ugns.value,place_type:form.place_type.value,point_name:form.point_name.value.trim(),point_address:form.point_address.value.trim(),tax_regime:form.tax_regime.value,vat:form.vat.checked,calc_types:[...form.querySelectorAll('[name=calc_type]:checked')].map(x=>x.value),comment:form.comment.value.trim()||null}}
-function textSummary(){const p=payload();return ['ЗАЯВКА НА РЕГИСТРАЦИЮ ККМ','Логин: '+p.login,'ИНН: '+p.inn,'Компания/ИП: '+p.company,'Юридический адрес: '+p.legal_address,'Директор: '+p.director,'ИНН директора: '+p.director_inn,'Телефон директора: '+p.director_phone,'Email директора: '+p.director_email,'Доп. телефон: '+p.extra_phone,'Контакт: '+(p.extra_name||''),'Тип объекта: '+p.object_type,'Вид деятельности: '+p.activity,'УГНС: '+p.ugns,'Тип точки: '+p.place_type,'Название точки: '+p.point_name,'Адрес точки: '+p.point_address,'Налоговый режим: '+p.tax_regime,'НДС: '+(p.vat?'Да':'Нет'),'Типы расчёта: '+p.calc_types.join(', '),'Комментарий: '+(p.comment||'')].join('\n')}
-document.getElementById('copyText').onclick=async()=>{try{await navigator.clipboard.writeText(textSummary());setResult('Текст заявки скопирован.');}catch(e){setResult('Не удалось скопировать текст.',true)}};
-document.getElementById('printPdf').onclick=()=>{const w=window.open('','_blank','noopener');if(!w){setResult('Браузер заблокировал окно печати. Разрешите всплывающие окна для этого сайта.',true);return}w.document.write('<html lang="ru"><head><meta charset="utf-8"><title>Заявка на регистрацию ККМ</title><style>body{font:14px Arial;padding:28px}h1{font-size:20px}pre{white-space:pre-wrap;font:14px/1.6 Arial} @media print{button{display:none}}</style></head><body><h1>Заявка на регистрацию ККМ</h1><pre>'+escHtml(textSummary())+'</pre><button onclick="window.print()">Печать / сохранить PDF</button></body></html>');w.document.close();setTimeout(()=>w.print(),250)};
-document.getElementById('reset').onclick=()=>{form.reset();form.querySelectorAll('.filebox').forEach(x=>{x.classList.remove('ready');x.querySelector('.preview').textContent=''});form.querySelectorAll('.invalid').forEach(x=>x.classList.remove('invalid'));document.getElementById('calcError').style.display='none';result.style.display='none';updateProgress()};
-form.addEventListener('submit',async e=>{e.preventDefault();if(!valid()){setResult('Проверьте обязательные поля и документы.',true);return}const body=new FormData();body.append('data',JSON.stringify(payload()));body.append('registration_document',form.registration_document.files[0]);body.append('passport_front',form.passport_front.files[0]);body.append('passport_back',form.passport_back.files[0]);send.disabled=true;setResult('Отправляем заявку…');try{const r=await fetch('/api/applications',{method:'POST',body});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||'Ошибка отправки');setResult('<b>Заявка принята.</b><br>Номер: <b>'+escHtml(d.application_number)+'</b><br>Статус: Новая<br><br><a href="/status.html?token='+encodeURIComponent(d.public_token)+'" target="_blank" rel="noopener">Открыть ссылку проверки статуса</a><br><small>Сохраните эту ссылку: восстановить её без токена нельзя.</small>');form.reset();form.querySelectorAll('.filebox').forEach(x=>{x.classList.remove('ready');x.querySelector('.preview').textContent=''});updateProgress();}catch(err){setResult(escHtml(err.message||'Не удалось отправить заявку.'),true)}finally{send.disabled=false}});
-updateProgress();
+const LISTS={
+objectTypes:["Автомобильная заправочная станция (АЗС)","Автомобильная газонаполнительная компрессорная станция (АГНКС)","Автомобильная газозаправочная станция (АГЗС)","Магазин (с торговой площадью более 200 кв.м.)","Магазин (с торговой площадью от 100 до 200 кв.м.)","Магазин (с торговой площадью от 50 до 100 кв.м.)","Магазин (с торговой площадью до 50 кв.м.)","Медицинская лаборатория, в т.ч. УЗИ","Медицинский центр (с площадью свыше 150 кв.м.)","Медицинский центр (с площадью до 150 кв.м.)","Кафе/Ресторан/Чайхана и т.д. (с количеством посадочных мест более 200)","Кафе/Ресторан/Чайхана и т.д. (с количеством посадочных мест от 100 до 200)","Кафе/Ресторан/Чайхана и т.д. (с количеством посадочных мест до 100)","Сеть быстрого питания (фаст-фуд)","Бутик/Отдел/Магазин в ТЦ (с торговой площадью более 200 кв.м.)","Бутик/Отдел/Магазин в ТЦ (с торговой площадью от 100 до 200 кв.м.)","Бутик/Отдел/Магазин в ТЦ (с торговой площадью от 50 до 100 кв.м.)","Бутик/Отдел/Магазин в ТЦ (с торговой площадью до 50 кв.м.)","Ветеринарная клиника","Ветеринарная аптека","Аптека","Аптечный пункт","Платежный терминал","Вендинговый аппарат","Сауна","Баня","Бильярдный клуб","Обменное бюро","Дискотека/Ночной клуб","Караоке","Круглосуточная автостоянка","Ломбард","Парикмахерская/Салон красоты","Стоматология","Аренда рекламных щитов","Мойка автотранспортных средств","Гостиница","Дом отдыха","Цирк","Аттракцион","Боулинг","Другие точки торговли","Другие точки оказания услуг","Айыл окмоту","Тандырная точка","Супермаркет","Павильон/Контейнер/Киоск (с площадью более 50 кв.м.)","Торговое место в торговом центре","Торговое место на рынке и мини-рынке","Складское помещение","Пункт замены масла","Ремонт бытовых изделий","Ателье, реставрация одежды и обуви","Типография","Банк или микрокредитная организация","Офисное помещение","Мебельный цех","Кондитерский цех","Дом отдыха","Частный коттедж","СТО","Вулканизация","Нотариус/Адвокатская контора","КОУ (пансионаты, санатории, лагеря и т.п.)","Павильон/Контейнер/Киоск (с площадью более 50 кв.м.)","Авиакасса","Бассейн","Образовательное учреждение (садик, школа, ВУЗ и т.п.)","Интернет-клуб","Игровой клуб (игровые приставки)","Кинотеатр","Химчистка","Спортивный зал (фитнес-клуб, зал единоборств и т.п.)","Фотосалон","Свадебный салон","Звукозапись","Спортивное поле (футбольное, теннисное, волейбольное и т.п.)","Цирк","Кондитерский цех","Швейный цех","Пекарня","Промышленное производство","Другие субъекты производства","Автостоянка","Производство колбасных и прочих изделий из мяса, мясных субпродуктов или крови животных","Розничная торговля цветами","Прочее"],
+taxRegimes:["Общий налоговый режим","Налог на основе обязательного патента","Налог на основе добровольного патента","Упрощенная система налогообложения на основе единого налога","Налоги на основе налогового контракта","Налоговый режим в свободных экономических зонах","Налоговый режим в Парке высоких технологий","Упрощенная система налогообложения на основе налога с розничных продаж","Налог на майнинг","Налог на деятельность в сфере электронной торговли","Налог на игорную деятельность","Упрощенная система налогообложения на основе единого налога (для ИП с 0%)","Упрощенная система налогообложения на основе единого налога (для рынка 0,1%)","Упрощенная система налогообложения на основе единого налога (до 30 — 0,5%)","Упрощенная система налогообложения на основе единого налога (до 50 — 1%)"],
+calcTypes:["Товар","Услуга","Предмет расчета, реализуемый банком","Услуга сотовой связи","Выплата клиенту","Авансовый платеж","Обмен иностранной валюты, реализуемый обменным бюро","Необлагаемые поставки","Кредитный платеж","Государственная пошлина"],
+placeTypes:["Стационарная точка","Онлайн-торговля","Выездная торговля"],
+ugnsList:["Октябрьский","Ленинский","Свердловский","Первомайский","Аламудунский","Кеминский","Иссык-Атинский","Жайылский","Московский","Панфиловский","Сокулукский","Чуйский район","Иссык-Кульский","Аксуйский район","Тонский","Жети-Огузский","Тюпский район","г. Каракол","г. Балыкчы","Алайский","Чон-Алайский р-н","Араванский","Баткенский р-н","Карасуйский","Лейлякский","Ноокатский район","Кара-Кульджинский","Узгенский","Кадамжайский","Кызыл-Кия","г. Ош","г. Сулюкта","Ак-Талинский","Ат-Башинский","Кочкорский","Жумгальский","Нарынский район","Сузакский","Ноокенский","Ала-Букинский","Токтогульский","Аксыйский","Тогуз-Тороуский","Базар-Коргонский район","Чаткальский","г. Джалал-Абад","г. Таш-Кумыр","г. Майлы-Суу","г. Кара-Куль","Таласский р-н","Бакай-Атинский","Кара-Буринский","Манасский","г. Талас","г.Токмок","г. Нарын","г. Баткен"],
+activities:["Розничная торговля широким ассортиментом товаров, в т.ч. продовольственными товарами","Розничная торговля горюче-смазочными материалами","Розничная торговля автомобильным газом","Розничная торговля авиабилетами","Розничная торговля ветеринарными препаратами","Розничная торговля фармацевтическими товарами","Розничная торговля медицинскими и ортопедическими товарами","Розничная торговля мясом и мясными продуктами","Розничная торговля рыбой, ракообразными и моллюсками","Розничная торговля хлебом, хлебобулочными изделиями, мучными и кондитерскими изделиями из сахара","Розничная торговля алкогольными и неалкогольными напитками","Розничная торговля табачными изделиями","Розничная торговля компьютерами и программным обеспечением","Розничная торговля аудио- и видеоаппаратурой","Розничная торговля бытовыми электротоварами","Розничная торговля текстильными изделиями","Розничная торговля строительными материалами","Розничная торговля коврами и ковровыми изделиями","Розничная торговля мебелью","Розничная торговля осветительными приборами и прочими бытовыми товарами","Розничная торговля книгами","Розничная торговля журналами и канцелярскими товарами","Розничная торговля видео- и музыкальными записями","Розничная торговля спортивными товарами","Розничная торговля играми и игрушками","Розничная торговля одеждой","Розничная торговля обувью","Розничная торговля косметическими и парфюмерными товарами","Розничная торговля цветами и другими растениями, семенами, удобрениями","Розничная торговля домашними животными (питомцами)","Розничная торговля кормом для животных","Розничная торговля часами и ювелирными изделиями","Розничная торговля запасными частями и материалами к автомобилям","Розничная торговля прочими продовольственными товарами","Розничная торговля прочими непродовольственными товарами","Услуги медицинских лабораторий, в т.ч. УЗИ","Услуги медицинских центров","Услуги общественного питания","Услуги сети быстрого питания (фаст-фуд)","Услуги ветеринаров","Услуги платежных терминалов","Услуги вендинговых аппаратов","Услуги саун","Услуги бань","Услуги бильярдных клубов","Услуги обменных бюро","Услуги дискотек/ночных клубов","Услуги круглосуточных автостоянок","Услуги ломбардов","Услуги парикмахерских и салонов красоты","Услуги стоматологий","Услуги аренды рекламных щитов","Услуги моек автотранспортных средств","Услуги гостиниц, домов отдыха, частных коттеджей","Услуги технического обслуживания и ремонта автомобилей","Услуги вулканизаций","Услуги нотариусов/адвокатских контор","Услуги КОУ (пансионаты, санатории, лагеря и т.п.)","Услуги бассейнов","Услуги образовательных учреждений (садик, школа, ВУЗ и т.п.)","Услуги интернет-клубов","Услуги игровых клубов (игровые приставки)","Услуги кинотеатров","Услуги химчистки","Услуги спортивных залов (фитнес-клуб, зал единоборств и т.п.)","Услуги фотосалонов","Услуги спортивных полей (футбол, теннис, волейбол и т.п.)","Услуги цирка","Услуги аттракционов","Услуги боулингов","Услуги звукозаписи","Услуги видеосъемки","Услуги свадебных салонов","Услуги караоке","Оказание прочих услуг","Сбор с населения платежей","Реализация запасных частей и материалов к автомобилям (новых и бывших в употреблении)","Реализация сотовых телефонов, запасных частей и деталей к ним с правом привлечения не более 1-го наемного работника","Скупка, ремонт и реализация изделий из драгоценных металлов и камней","Розничная реализация в специализированных магазинах овощей, фруктов, ягод и других видов растений","Розничная реализация в специализированных магазинах, торговой площадью до 50 кв.м., товаров, инвентаря","Розничная реализация в специализированных магазинах, торговой площадью до 50 кв.м., мыломоющих средств","Розничная реализация на дому газовых баллонов, угля в мешках и дров","Изготовление и реализация готовых мясных блюд из мяса и мяса птиц (шашлык, гриль)","Производство хлеба, хлебобулочных и мучных кондитерских изделий недлительного хранения","Производство пескоблока, шлакоблока и брусчатки на дому","Услуги по перевозке грузов","Услуги по доставке","Услуги по обучению","Услуги по уборке","Услуги по перевозке пассажиров","Услуги по консультации","Услуги по страхованию","Услуги по обслуживанию оборудования","Услуги туристско-экскурсионные","Услуги по сдаче в аренду имущества","Услуги по реставрированию","Услуги бурения скважин","Услуги по татуировке","Розничная торговля алкогольными напитками","Розничная торговля неалкогольными напитками","Розничная торговля скобяными изделиями, лакокрасочными материалами и стеклом","Розничная торговля преимущественно пищевыми продуктами, включая напитки и табачные изделия","Розничная торговля прочими товарами","Розничная торговля фруктами и овощами","Розничная торговля в палатках и на рынках текстилем, одеждой, обувью","Розничная торговля в палатках и на рынках прочими товарами","Розничная дистанционная торговля (по почте и через Интернет)","Прочая розничная торговля вне магазинов, палаток и рынков","Сдача внаем собственного недвижимого имущества","Деятельность агентств по операциям с недвижимым имуществом","Управление недвижимым имуществом","Деятельность по обеспечению физического комфорта","Деятельность в области права","Деятельность в области бухгалтерского учета и аудита","Деятельность центральных офисов","Консультирование по вопросам связи с общественностью","Консультирование по вопросам коммерческой деятельности и управления","Деятельность в области архитектуры","Деятельность в области инженерных изысканий и предоставление технических консультаций","Технические испытания и контроль","Ремонт компьютеров и периферийного оборудования","Ремонт оборудования связи","Ремонт электробытовых товаров","Ремонт бытовой техники и садового оборудования","Ремонт обуви и прочих изделий из кожи","Ремонт мебели и аналогичных домашних изделий","Ремонт часов и ювелирных изделий","Ремонт прочих предметов личного пользования и бытовых товаров","Деятельность в области прочих видов искусства","Деятельность театральных и концертных залов","Деятельность библиотек и архивов","Деятельность учреждений культуры клубного типа","Деятельность музеев","Деятельность по сохранению и посещению исторических мест и зданий","Деятельность ботанических садов, зоопарков и заповедников","Организация азартных игр и заключение пари","Эксплуатация и управление спортивными сооружениями","Деятельность спортивных клубов","Деятельность фитнес-клубов","Прочая спортивная деятельность","Деятельность парков отдыха и развлечений","Прочая деятельность по организации отдыха и развлечений","Деятельность санаторно-курортных учреждений","Деятельность в области общей врачебной практики","Деятельность в области специальной врачебной практики","Деятельность в области стоматологии","Лизинг интеллектуальной собственности и аналогичных продуктов","Деятельность агентств по трудоустройству","Деятельность по обеспечению временной рабочей силой","Деятельность по обеспечению прочими трудовыми ресурсами","Деятельность туристических агентств по оптовой и розничной продаже экскурсий, путешествий, организованных поездок","Деятельность туристических агентств по бронированию мест на транспортных средствах","Деятельность туроператоров","Бронирование и прочая деятельность в области туризма","Деятельность частных охранников и частных охранных бюро","Обеспечение функционирования систем безопасности","Проведение расследований","Прочее"]
+};
+
+const form=document.getElementById('f');
+const result=document.getElementById('result');
+const sendBtn=document.getElementById('sendBtn');
+const $=s=>document.querySelector(s);
+
+function fillSelect(name,items){
+  const select=form.elements[name];
+  items.forEach((x,i)=>select.appendChild(new Option((i+1)+'. '+x,x)));
+}
+fillSelect('object_type',LISTS.objectTypes);
+fillSelect('activity',LISTS.activities);
+fillSelect('place_type',LISTS.placeTypes);
+fillSelect('tax_regime',LISTS.taxRegimes);
+LISTS.ugnsList.forEach((x,i)=>$('#ugns').appendChild(new Option((i+1)+'. '+x,x)));
+$('#ugns').appendChild(new Option('58. Другой (указать вручную)','other'));
+
+LISTS.calcTypes.forEach((t,i)=>{
+  const l=document.createElement('label');
+  const c=document.createElement('input');
+  c.type='checkbox';c.name='calc_type';c.value=(i+1)+'. '+t;
+  l.append(c,document.createTextNode((i+1)+'. '+t));$('#calcList').appendChild(l);
+});
+
+const ugns=$('#ugns');
+ugns.addEventListener('change',()=>{
+  $('#ugnsOtherWrap').hidden=ugns.value!=='other';
+  if(ugns.value!=='other') form.ugns_other.value='';
+  progress();
+});
+
+$('#pwt').onclick=e=>{
+  const i=form.password;
+  i.type=i.type==='password'?'text':'password';
+  e.target.textContent=i.type==='password'?'Показать':'Скрыть';
+};
+
+document.querySelectorAll('[data-phone]').forEach(inp=>{
+  const format=()=>{
+    let d=inp.value.replace(/\D/g,'');
+    if(d.startsWith('0'))d='996'+d.slice(1);
+    if(d.startsWith('996'))d=d.slice(3);else d=d.slice(-9);
+    d=d.slice(0,9);
+    inp.value='+996'+(d?' '+d.slice(0,3):'')+(d.length>3?' '+d.slice(3,6):'')+(d.length>6?' '+d.slice(6,9):'');
+  };
+  inp.addEventListener('focus',()=>{if(!inp.value)inp.value='+996 ';});
+  inp.addEventListener('input',format);
+  inp.addEventListener('blur',format);
+});
+document.querySelectorAll('[data-inn]').forEach(inp=>{
+  const clean=()=>{inp.value=inp.value.replace(/\D/g,'').slice(0,14)};
+  inp.addEventListener('beforeinput',e=>{if(e.data&&!/^\d+$/.test(e.data))e.preventDefault()});
+  inp.addEventListener('input',clean);inp.addEventListener('blur',clean);
+});
+
+const calcChecked=()=>[...form.querySelectorAll('[name=calc_type]:checked')].map(c=>c.value);
+function validate(el){
+  const wrap=el.closest('.field');if(!wrap)return true;
+  const v=(el.value||'').trim();let ok=true;
+  if(el.name==='calc_type')ok=calcChecked().length>0;
+  else if(el.name==='ugns_other')ok=$('#ugnsOtherWrap').hidden||v.length>2;
+  else if(el.required&&!v)ok=false;
+  if(ok&&el.dataset.inn!==undefined)ok=/^\d{14}$/.test(v);
+  if(ok&&el.dataset.phone!==undefined)ok=/^\+996 \d{3} \d{3} \d{3}$/.test(v);
+  if(ok&&el.type==='email')ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  wrap.classList.toggle('bad',!ok);return ok;
+}
+function reqEls(){
+  return [...form.querySelectorAll('[required]')].filter(x=>x.type!=='file');
+}
+function validateDocuments(){
+  let ok=true;
+  ['regDoc','passFront','passBack'].forEach(id=>{
+    const input=document.getElementById(id),wrap=input.closest('.doc-box');
+    const good=!!(input.files&&input.files.length);
+    wrap.classList.toggle('bad',!good);if(!good)ok=false;
+    if(good&&!['image/jpeg','image/png'].includes(input.files[0].type)){wrap.classList.add('bad');ok=false}
+  });
+  return ok;
+}
+function progress(){
+  const els=reqEls();
+  const docs=[...document.querySelectorAll('.doc-box input[type=file]')];
+  const done=els.filter(e=>(e.value||'').trim()).length+(calcChecked().length?1:0)+docs.filter(e=>e.files&&e.files.length).length;
+  const total=els.length+docs.length+1;
+  const p=Math.min(100,Math.round(done/total*100));
+  $('#pbar').style.width=p+'%';$('#ptext').textContent='Заполнено '+p+'%';
+}
+form.addEventListener('input',e=>{if(e.target.closest('.bad'))validate(e.target);progress()});
+form.addEventListener('change',e=>{if(e.target.matches('select,input[type=checkbox],input[type=file]')){validate(e.target);progress()}});
+form.addEventListener('focusout',e=>{if(e.target.matches('input,select')&&(e.target.value||'').trim())validate(e.target)});
+
+function g(n){return(form[n].value||'').trim()}
+function getUgnsData(){
+  return {
+    ugns:g('ugns'),
+    ugns_other:g('ugns')==='other'?g('ugns_other'):null
+  };
+}
+function collect(){
+  const u=getUgnsData();
+  return [
+    ['Доступ к lk.salyk.kg',[['Логин',g('login')],['Пароль',g('password')]]],
+    ['Компания / ИП',[['ИНН компании',g('inn')],['Название компании',g('company')],['Юридический адрес',g('legal_address')],['ФИО директора',g('director')],['ИНН директора',g('director_inn')],['Телефон директора',g('director_phone')],['Эл. почта директора',g('director_email')]]],
+    ['Доп. контакт',[['Доп. телефон',g('extra_phone')],['Контактное лицо',g('extra_name')||'—']]],
+    ['Данные договора',[['Тип объекта предпринимательства',g('object_type')],['Вид деятельности',g('activity')],['Район УГНС',u.ugns==='other'?(u.ugns_other||'Другой'):u.ugns]]],
+    ['Торговая точка',[['Тип торговой точки',g('place_type')],['Название точки',g('point_name')],['Фактический адрес',g('point_address')]]],
+    ['Налоги и расчёты',[['Режим налогообложения',g('tax_regime')],['Плательщик НДС',form.vat.checked?'Да':'Нет'],['Тип расчёта',calcChecked().join('; ')]]],
+    ['Комментарий',[['Комментарий',g('comment')||'—']]]
+  ];
+}
+function apiPayload(){
+  const u=getUgnsData();
+  return {
+    login:g('login'),
+    password:form.password.value,
+    inn:g('inn'),
+    company:g('company'),
+    legal_address:g('legal_address'),
+    director:g('director'),
+    director_inn:g('director_inn'),
+    director_phone:g('director_phone'),
+    director_email:g('director_email'),
+    extra_phone:g('extra_phone'),
+    extra_name:g('extra_name')||null,
+    object_type:g('object_type'),
+    activity:g('activity'),
+    ugns:u.ugns,
+    ugns_other:u.ugns_other,
+    place_type:g('place_type'),
+    point_name:g('point_name'),
+    point_address:g('point_address'),
+    tax_regime:g('tax_regime'),
+    vat:!!form.vat.checked,
+    calc_types:calcChecked(),
+    comment:g('comment')||null
+  };
+}
+function asText(d){
+  return 'ЗАЯВКА НА РЕГИСТРАЦИЮ ККМ\n'+new Date().toLocaleString('ru-RU')+'\n\n'+
+    d.map(x=>x[0]+'\n'+x[1].map(y=>y[0]+': '+y[1]).join('\n')).join('\n\n')+
+    '\n\nДокументы: свидетельство о регистрации, паспорт директора (лицевая и обратная сторона).';
+}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function checkAll(requireDocs=true){
+  const bad=reqEls().filter(e=>!validate(e));
+  const docsOk=requireDocs?validateDocuments():true;
+  if(bad.length||!docsOk){
+    $('#errsum').style.display='block';
+    if(bad.length){
+      $('#errsum').textContent='Не заполнено или заполнено с ошибкой: '+bad.length+'. Поля отмечены красным.';
+      bad[0].scrollIntoView({behavior:'smooth',block:'center'});
+      bad[0].focus({preventScroll:true});
+    }else{
+      $('#errsum').textContent='Загрузите три фотографии документов в формате JPG или PNG.';
+      const first=document.querySelector('.doc-box.bad')||document.querySelector('.doc-box');
+      if(first)first.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    return false;
+  }
+  $('#errsum').style.display='none';return true;
+}
+
+$('#copyBtn').onclick=async()=>{
+  if(!checkAll(false))return;
+  const t=asText(collect());let copied=false;
+  try{
+    const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.top='-9999px';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);copied=document.execCommand('copy');ta.remove();
+  }catch(e){}
+  if(!copied&&navigator.clipboard){try{await navigator.clipboard.writeText(t);copied=true}catch(e){}}
+  $('#copyBtn').textContent=copied?'Текст скопирован':'Не удалось скопировать';
+  setTimeout(()=>$('#copyBtn').textContent='Скопировать текст заявки',2000);
+  if(copied){$('#result').style.display='block';$('#result').innerHTML='<h3>Текст заявки скопирован</h3><ol style="margin:6px 0 0;padding-left:20px"><li>Создайте письмо в Outlook и вставьте текст (Ctrl+V).</li><li>Приложите документы клиента.</li></ol>'}
+};
+
+function loadImg(file){return new Promise((resolve,reject)=>{if(!file){reject(new Error('Файл не выбран'));return}const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Браузер не смог открыть изображение'))};img.src=url})}
+function wrapCanvasText(ctx,text,x,y,maxWidth,lineHeight){const words=String(text).split(/\s+/);let line='';const lines=[];for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lineHeight));return y+lines.length*lineHeight}
+function drawImageContain(ctx,img,x,y,w,h){const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height,r=Math.min(w/iw,h/ih),dw=iw*r,dh=ih*r,dx=x+(w-dw)/2,dy=y+(h-dh)/2;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,dx,dy,dw,dh)}
+function buildSimplePdf(pages){
+  const enc=new TextEncoder(),chunks=[],objects=[];let offset=0;
+  const add=b=>{chunks.push(b);offset+=b.length};
+  const obj=(id,body)=>{const start=offset;add(enc.encode(id+' 0 obj\n'+body+'\nendobj\n'));objects.push([id,start])};
+  add(enc.encode('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'));
+  const pagesId=3,catalogId=1,fontId=2;obj(catalogId,'<< /Type /Catalog /Pages '+pagesId+' 0 R >>');obj(fontId,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const pageIds=[],contentIds=[],imageIds=[];let next=4;
+  pages.forEach(()=>{pageIds.push(next++);contentIds.push(next++);imageIds.push(next++)});
+  obj(pagesId,'<< /Type /Pages /Kids ['+pageIds.map(id=>id+' 0 R').join(' ')+'] /Count '+pageIds.length+' >>');
+  pages.forEach((p,i)=>{
+    const bin=atob(p.dataUrl.split(',')[1]),imgBytes=new Uint8Array(bin.length);for(let k=0;k<bin.length;k++)imgBytes[k]=bin.charCodeAt(k);
+    const pw=595.28,ph=841.89,pageId=pageIds[i],contentId=contentIds[i],imageId=imageIds[i];
+    obj(pageId,'<< /Type /Page /Parent '+pagesId+' 0 R /MediaBox [0 0 '+pw+' '+ph+'] /Resources << /XObject << /Im'+i+' '+imageId+' 0 R >> >> /Contents '+contentId+' 0 R >>');
+    const stream='q\n'+pw+' 0 0 '+ph+' 0 0 cm\n/Im'+i+' Do\nQ';
+    obj(contentId,'<< /Length '+enc.encode(stream).length+' >>\nstream\n'+stream+'\nendstream');
+    const start=offset;add(enc.encode(imageId+' 0 obj\n<< /Type /XObject /Subtype /Image /Width '+p.width+' /Height '+p.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+imgBytes.length+' >>\nstream\n'));add(imgBytes);add(enc.encode('\nendstream\nendobj\n'));objects.push([imageId,start]);
+  });
+  const xref=offset;add(enc.encode('xref\n0 '+next+'\n0000000000 65535 f \n'));const map=new Map(objects);for(let i=1;i<next;i++)add(enc.encode(String(map.get(i)||0).padStart(10,'0')+' 00000 n \n'));add(enc.encode('trailer\n<< /Size '+next+' /Root '+catalogId+' 0 R >>\nstartxref\n'+xref+'\n%%EOF'));
+  const out=new Uint8Array(offset);let pos=0;for(const ch of chunks){out.set(ch,pos);pos+=ch.length}return new Blob([out],{type:'application/pdf'})
+}
+async function generatePdf(){
+  if(!checkAll())return;
+  const btn=$('#pdfBtn');btn.disabled=true;btn.textContent='Создание PDF…';
+  try{
+    const imgs=await Promise.all([document.getElementById('regDoc').files[0],document.getElementById('passFront').files[0],document.getElementById('passBack').files[0]].map(loadImg));
+    const W=1240,H=1754,margin=70,contentW=W-margin*2,pages=[];
+    const page=document.createElement('canvas');page.width=W;page.height=H;const ctx=page.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.fillStyle='#16324a';ctx.font='700 34px Arial';ctx.fillText('ЗАЯВКА НА РЕГИСТРАЦИЮ ККМ',margin,70);ctx.font='18px Arial';ctx.fillStyle='#4b6275';ctx.fillText(new Date().toLocaleString('ru-RU'),margin,118);
+    let y=165;ctx.fillStyle='#16324a';ctx.font='700 23px Arial';
+    for(const pair of collect()){if(y>H-170)break;ctx.fillText(pair[0],margin,y);y+=32;ctx.font='18px Arial';for(const row of pair[1]){y=wrapCanvasText(ctx,row[0]+': '+row[1],margin,y,contentW,27)+10;if(y>H-100)break}y+=15;ctx.font='700 23px Arial'}pages.push({dataUrl:page.toDataURL('image/jpeg',.95),width:W,height:H});
+    const pass=document.createElement('canvas');pass.width=W;pass.height=H;const pc=pass.getContext('2d');pc.fillStyle='#fff';pc.fillRect(0,0,W,H);pc.fillStyle='#16324a';pc.font='700 24px Arial';pc.fillText('Паспорт директора — лицевая и обратная стороны',margin,70);const gap=45,top=115,bottom=80,boxH=(H-top-bottom-gap)/2;drawImageContain(pc,imgs[1],margin,top,contentW,boxH);drawImageContain(pc,imgs[2],margin,top+boxH+gap,contentW,boxH);pages.push({dataUrl:pass.toDataURL('image/jpeg',.95),width:W,height:H});
+    const reg=document.createElement('canvas');reg.width=W;reg.height=H;const rc=reg.getContext('2d');rc.fillStyle='#fff';rc.fillRect(0,0,W,H);rc.fillStyle='#16324a';rc.font='700 24px Arial';rc.fillText('Свидетельство о регистрации ИП / ОсОО',margin,70);drawImageContain(rc,imgs[0],margin,100,contentW,H-160);pages.push({dataUrl:reg.toDataURL('image/jpeg',.95),width:W,height:H});
+    const pdf=buildSimplePdf(pages),url=URL.createObjectURL(pdf),a=document.createElement('a');a.href=url;a.download=(g('inn')||'заявка')+'_заявка_ККМ.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);btn.textContent='PDF скачан';setTimeout(()=>btn.textContent='Скачать заявку в PDF',2000)
+  }catch(e){console.error(e);alert('Не удалось создать PDF. Используйте обычные JPG/PNG-файлы.');btn.textContent='Ошибка создания PDF';setTimeout(()=>btn.textContent='Скачать заявку в PDF',2000)}
+  finally{btn.disabled=false}
+}
+[['regDoc','regPreview'],['passFront','passFrontPreview'],['passBack','passBackPreview']].forEach(([id,pid])=>{
+  const input=document.getElementById(id),preview=document.getElementById(pid),box=input.closest('.doc-box'),picker=box.querySelector('.file-picker');
+  input.addEventListener('change',()=>{
+    const file=input.files&&input.files[0];
+    if(file){
+      preview.style.display='flex';box.classList.add('ready');box.classList.remove('bad');
+      if(!['image/jpeg','image/png'].includes(file.type))box.classList.add('bad');
+      const img=preview.querySelector('img');if(img.dataset.url)URL.revokeObjectURL(img.dataset.url);const url=URL.createObjectURL(file);img.dataset.url=url;img.src=url;preview.querySelector('span').textContent=file.name;picker.textContent='Выбрать другое фото';
+    }else{preview.style.display='none';box.classList.remove('ready');picker.textContent='Выбрать фото'}
+    progress()
+  })
+});
+document.querySelectorAll('.replace-btn').forEach(btn=>btn.addEventListener('click',()=>document.getElementById(btn.dataset.file).click()));
+$('#pdfBtn').onclick=generatePdf;
+
+$('#sendBtn').onclick=async()=>{
+  if(!checkAll(true))return;
+  const body=new FormData();
+  body.append('data',JSON.stringify(apiPayload()));
+  body.append('registration_document',document.getElementById('regDoc').files[0],document.getElementById('regDoc').files[0].name);
+  body.append('passport_front',document.getElementById('passFront').files[0],document.getElementById('passFront').files[0].name);
+  body.append('passport_back',document.getElementById('passBack').files[0],document.getElementById('passBack').files[0].name);
+  sendBtn.disabled=true;sendBtn.textContent='Отправка…';
+  $('#result').style.display='block';$('#result').innerHTML='<h3>Отправка заявки…</h3><p>Пожалуйста, не закрывайте страницу.</p>';
+  try{
+    const response=await fetch('/api/applications',{method:'POST',body});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(data.detail||'Сервер не принял заявку');
+    $('#result').innerHTML='<h3>Заявка успешно отправлена</h3><p>Номер заявки: <b>'+esc(data.application_number)+'</b></p><p>Статус: <b>Новая</b></p><p><a href="/status.html?token='+encodeURIComponent(data.public_token)+'" target="_blank" rel="noopener">Открыть ссылку для проверки статуса</a></p><p style="font-size:.85rem;color:var(--ink-soft)">Сохраните эту ссылку. Она нужна клиенту для просмотра статуса без входа в кабинет.</p>';
+    $('#result').scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(e){
+    $('#result').innerHTML='<h3 style="color:var(--err)">Не удалось отправить заявку</h3><p>'+esc(e.message||'Ошибка сервера')+'</p>';
+    $('#result').scrollIntoView({behavior:'smooth',block:'center'});
+  }finally{sendBtn.disabled=false;sendBtn.textContent='Отправить заявку'}
+};
+
+$('#resetBtn').onclick=()=>{
+  if(!confirm('Очистить все поля формы?'))return;
+  form.reset();
+  document.querySelectorAll('.doc-preview').forEach(x=>{x.style.display='none';const img=x.querySelector('img');if(img.dataset.url){URL.revokeObjectURL(img.dataset.url);delete img.dataset.url;img.removeAttribute('src')}});
+  document.querySelectorAll('.doc-box').forEach(x=>x.classList.remove('ready','bad'));
+  document.querySelectorAll('.file-picker').forEach(x=>x.textContent='Выбрать фото');
+  form.querySelectorAll('.bad').forEach(x=>x.classList.remove('bad'));
+  $('#ugnsOtherWrap').hidden=true;
+  $('#result').style.display='none';$('#errsum').style.display='none';progress();window.scrollTo({top:0,behavior:'smooth'})
+};
+progress();
 </script>
-</body></html>
+</body>
+</html>
