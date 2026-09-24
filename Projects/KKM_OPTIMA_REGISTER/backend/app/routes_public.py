@@ -1,16 +1,19 @@
+import secrets
+
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
+
 from .auth import encrypt_secret
 from .config import get_settings
 from .db import get_db
 from .models import Application, AuditLog, Document
 from .schemas import ApplicationCreate, ApplicationDetails, PublicStatus
-from .services import application_number, load_upload, public_token_hash, store_upload, validate_file
-import secrets
+from .services import application_number, load_upload, public_token_hash, remove_stored_files, store_upload, validate_file
 
 router = APIRouter(prefix="/api")
 s = get_settings()
+
 
 @router.post("/applications", response_model=ApplicationDetails, status_code=201)
 async def create_application(
@@ -21,54 +24,65 @@ async def create_application(
     db: Session = Depends(get_db),
 ):
     try:
-        p = ApplicationCreate.model_validate_json(data)
+        payload = ApplicationCreate.model_validate_json(data)
     except Exception as exc:
-        raise HTTPException(422, f"Некорректные данные заявки: {exc}")
+        raise HTTPException(422, "Некорректные данные заявки") from exc
 
-    loaded = []
+    loaded: list[tuple[str, UploadFile, bytes]] = []
     limit = s.max_file_size_mb * 1024 * 1024
-    for typ, up in [
+    for doc_type, upload in [
         ("REGISTRATION", registration_document),
         ("PASSPORT_FRONT", passport_front),
         ("PASSPORT_BACK", passport_back),
     ]:
-        content = await load_upload(up)
+        content = load_upload(upload)
         if len(content) > limit:
-            raise HTTPException(413, "Файл слишком большой")
-        validate_file(content, up.content_type or "")
-        loaded.append((typ, up, content))
+            raise HTTPException(413, f"Файл {upload.filename or ''} слишком большой")
+        validate_file(content, upload.content_type or "")
+        loaded.append((doc_type, upload, content))
 
-    token = secrets.token_urlsafe(24)
-    item = Application(
-        application_number=application_number(),
-        public_token_hash=public_token_hash(token),
-        login=p.login,
-        lk_password_encrypted=encrypt_secret(p.password),
-        **p.model_dump(exclude={"login", "password"}),
-    )
-    db.add(item)
-    db.flush()
-
-    for typ, up, content in loaded:
-        name, sha = store_upload(up, content)
-        db.add(
-            Document(
-                application_id=item.id,
-                document_type=typ,
-                original_name=(up.filename or "file")[:255],
-                storage_name=name,
-                mime_type=up.content_type or "application/octet-stream",
-                size_bytes=len(content),
-                sha256=sha,
-            )
+    token = secrets.token_urlsafe(32)
+    stored_names: list[str] = []
+    try:
+        item = Application(
+            application_number=application_number(),
+            public_token_hash=public_token_hash(token),
+            login=payload.login,
+            lk_password_encrypted=encrypt_secret(payload.password),
+            **payload.model_dump(exclude={"login", "password"}),
         )
+        db.add(item)
+        db.flush()
 
-    db.add(AuditLog(application_id=item.id, action="CREATED", details={"source": "public_form"}))
-    db.commit()
+        for doc_type, upload, content in loaded:
+            storage_name, sha = store_upload(upload, content)
+            stored_names.append(storage_name)
+            db.add(
+                Document(
+                    application_id=item.id,
+                    document_type=doc_type,
+                    original_name=(upload.filename or "file")[:255],
+                    storage_name=storage_name,
+                    mime_type=upload.content_type or "application/octet-stream",
+                    size_bytes=len(content),
+                    sha256=sha,
+                )
+            )
+
+        db.add(AuditLog(application_id=item.id, action="CREATED", details={"source": "public_form"}))
+        db.commit()
+    except Exception:
+        db.rollback()
+        remove_stored_files(stored_names)
+        raise
+
     item = db.scalar(
         select(Application).options(selectinload(Application.documents)).where(Application.id == item.id)
     )
+    if not item:
+        raise HTTPException(500, "Заявка не создана")
     return ApplicationDetails.model_validate(item, from_attributes=True).model_copy(update={"public_token": token})
+
 
 @router.get("/public/{token}", response_model=PublicStatus)
 def public_status(token: str, db: Session = Depends(get_db)):
